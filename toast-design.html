@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toast Design</title>
+    <style>
+      .toast {
+        --r: 25px; /* the radius */
+        --s: 33px; /* the size of the corner*/
+        filter: drop-shadow(1px 10px 10px oklch(10% 40 200 / 0.2));
+        display: block;
+        position: relative;
+        width: max-content;
+        display: grid block;
+        place-items: center;
+        font-size: 1.5rem;
+        padding: calc(var(--s));
+        padding-inline-end: calc(2rem + var(--s));
+        color: darkblue;
+        font-weight: bold;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+      }
+
+      /* HTML: <div class="inverted-radius"></div> */
+
+      .inverted-radius {
+        inset: 0;
+        position: absolute;
+        z-index: -1;
+        --progress: 0;
+        background: radial-gradient(
+          ellipse at
+            calc(
+              cos(var(--progress) * pi * 2rad) * 10% + var(--progress) * 100%
+            )
+            calc(cos(var(--progress) * pi * 2rad) * 50% + -50%) in oklch,
+          oklch(0.5 0.31 279.36),
+          oklch(0.81 0.3 151.12)
+        );
+
+        animation: to1andback 20s linear infinite;
+
+        border-radius: var(--r);
+        --_m: /calc(2 * var(--r)) calc(2 * var(--r)) radial-gradient(
+            #000 70%,
+            #0000 72%
+          ) no-repeat;
+        mask: right calc(var(--s) + var(--r)) top 0 var(--_m),
+          right calc(var(--s) + var(--r)) var(--_m), right 0 top 0 var(--_m),
+          radial-gradient(var(--s) at 100% 0, #0000 99%, #000 101%)
+            calc(-1 * var(--r)) var(--r) no-repeat,
+          conic-gradient(
+            at calc(100% - var(--s) - 2 * var(--r))
+              calc(var(--s) + 2 * var(--r)),
+            #0000 25%,
+            #000 0
+          );
+      }
+
+      .close {
+        position: absolute;
+        inset-block: 0 auto;
+        inset-inline: auto 0;
+        width: calc(2 * var(--r));
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: none;
+
+        background-color: transparent;
+
+        color: white;
+
+        --xtop: 50%;
+        --scale: 1;
+
+        &:focus {
+          background-color: #0005;
+          --scale: 1.1;
+        }
+        &:hover {
+          background-color: #0008;
+          --scale: 1.1;
+        }
+
+        &:active {
+          background: #0002;
+          --xtop: 51%;
+        }
+
+        &::before {
+          transition: all 100ms ease-in-out;
+          content: "";
+          width: 20px;
+          height: 3px;
+          position: absolute;
+          top: calc(var(--xtop) - 2px);
+          left: calc(50% - 10px);
+          rotate: -45deg;
+          scale: var(--scale);
+          background-color: currentColor;
+        }
+        &::after {
+          transition: all 100ms ease-in-out;
+          content: "";
+          width: 20px;
+          height: 3px;
+          position: absolute;
+          top: calc(var(--xtop) - 2px);
+          left: calc(50% - 10px);
+          rotate: 45deg;
+          scale: var(--scale);
+          background-color: currentColor;
+        }
+      }
+
+      .visually-hidden {
+        clip: rect(1px, 1px, 1px, 1px);
+        clip-path: inset(50%);
+        height: 1px;
+        width: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+      }
+      i {
+        display: inline-block;
+        font-size: 2rem;
+        font-style: normal;
+        margin-inline-end: 10px;
+      }
+
+      @keyframes to1andback {
+        50% {
+          --progress: 1;
+        }
+      }
+
+      @property --progress {
+        syntax: "<number>";
+        inherits: false;
+        initial-value: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <output class="toast">
+      <div class="inverted-radius"></div>
+      <p><i>🥳</i> Your request was successful!</p>
+      <button class="close"><span class="visually-hidden">Close</span></button>
+    </output>
+  </body>
+</html>
