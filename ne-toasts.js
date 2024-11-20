@@ -50,7 +50,7 @@ function getNode(str) {
 }
 
 function template({ text, ttl, count }) {
-  return String.raw`<output style="--ttl: ${ttl}; view-transition-name: toast-${count}">
+  return String.raw`<output style="--ttl: ${ttl};">
   <div class="toast-content">${text}</div>
   <div class="border-wrapper">
     <div class="border-element"></div>
